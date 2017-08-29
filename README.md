@@ -14,14 +14,11 @@ This allows you to create single markers but also named sets of markers (batch p
 
 ### Using the binary executables (releases)
 
-1. Edit the file ``marker_names.txt`` to add your own market names. **Note: when you are using the executable in Mac**, this text file is bundled inside the executable.app, which you can view when you open the .app as a folder, e.g., ``armarkergenerator.app/Contents/Java/data/``) 2. Edit the file and add each marker name; separating each word with a comma (``,``).
+1. Edit the file ``marker_names.txt`` to add your own market names. **Note: when you are using the executable in Mac**, this text file is bundled inside the executable.app, which you can view when you open the .app as a folder, e.g., ``armarkergenerator.app/Contents/Java/data/``) 
+2. Edit the file and add each marker name; separating each word with a comma (``,``).
 3. Download the release [from our github](https://github.com/PedroLopes/AR-Marker-Generator/releases) (depends on your operating system and comes bundled with java already)
 4. Double click to execute it.
 5. It will start generating your AR markers; then wait for it to close automatically (likely takes 10 seconds). The markers will show up in your ``markers``directory.
-
-
-/Users/pedro/Documents/Processing/AR-Marker-Generator/armarkergenerator/application.macosx/
-
 
 ## Examples of generated markers
 
