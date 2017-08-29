@@ -1,29 +1,40 @@
-float triangleSize = 1;
-int triangleLimit;
-int colorUpperLimit;
-int colorLowerLimit;
-int markerCounter;
-int borderSize;
-
-String[] names = {"handL", "handR", "cup_intensity", "cup_color", "thermostat", "room_corner", "couch", "painting", "lamp", "button", "gooseneck_lamp1", "gooseneck_lamp2", "gooseneck_lamp3", "message", "door", "wall_1", "wall_2", "cupboard", "tray", "table", "book", "catalogue"}; 
-int marker_size = 1000; //width of the marker  //processing 3 requires you to write in line 16 the actual size of your markers, super lame. 
-int line_width = 3; //width of the lines
-String directory = "markers"; // choose directory where to save your markers
+// AR generator parameters (tweak at wish)
+float triangleSize = 500;                     //triangle max size in pixel
+int marker_size = 1000;                       //width of the marker  //processing 3 requires you to write in line 16 the actual size of your markers, super lame. 
+int line_width = 3;                           //width of the lines
 int min_edge = 200;
 int min_angle = 30;
-int max_tries = 100;
+int max_tries = 100;                          //because this is a brute force approach, this affects performance (# of tries => increases time)
 
+//directory for storying your generated AR markers
+String directory = "markers";                 // choose directory where to save your markers
+
+//marker names (read TEXT file)
+String text_file_name = "marker_names.txt";   //change here if you want to load a text file under another name (this file should list all marker names followed by a comma)
+String delimiters = " ,.?!;:[]";              //Any punctuation is used as a delimiter.
+String[] names;                               //No need to edit this variable
+
+//other variables 
+int triangleLimit = 40;                      //Draw number of triangles per marker
+int colorUpperLimit = 255;                   //Color limits to control overall color brightness
+int colorLowerLimit = 50;                    //Color limits to control overall color brightness
+int markerCounter;                           //Depends on how mnay markers you specified names on your TEXT file. 
+int borderSize = 0;                          //Border in pixels in addition to the canvas size, borders ar blank white 
+ 
 void setup() {
-  size(1000, 1000); //processing 3 requires you to write here the actual size of your markers, super lame. 
+  size(1000, 1000);                           //processing 3 requires you to write here the actual size of your markers (I think this is super lame.) 
   strokeWeight(line_width);
-  //settings  
-  //triangle max size in pixel
-  triangleSize = 500;
-  //Color limits to control overall color brightness
-  colorUpperLimit = 255;
-  colorLowerLimit = 50; //224;
-  triangleLimit = 40;//250; //Draw number of triangles per marker
-  borderSize = 0; //Border in pixels in addition to the canvas size, borders ar blank white
+  
+  try{
+    String[] rawtext = loadStrings(text_file_name);
+    String alltext = join(rawtext, "" );
+    names = splitTokens(alltext, delimiters);
+  }
+  catch (NullPointerException e) {           // if you forgot the text file, will still produce for nice markers and warn you. 
+    println("WARNING: no  file found" + e);
+    names = new String[4];
+    for (int i = 0; i < 4; i++) names[i] = "no_marker_name_textfile_found";  
+  }
   println("Generating " +  names.length + " markers");
 }
  
@@ -41,7 +52,6 @@ void draw() {
   }
 }
 
-
 void drawMarker() {
  for (int i = 0; i < triangleLimit; i++)
   {
@@ -52,7 +62,7 @@ void drawMarker() {
     int tris = 1;
     
     do {
-      print("generating");
+      print("Generating");
       if (tris > 1) print(" a new");
       println(" triangle no." + tris);
       a = new PVector(random(-triangleSize/2, triangleSize/2), random(-triangleSize/2, triangleSize/2));
