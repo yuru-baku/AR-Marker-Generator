@@ -10,7 +10,7 @@ int max_tries = 100;                          //because this is a brute force ap
 String directory = "markers";                 // choose directory where to save your markers
 
 //marker names (read TEXT file)
-String text_file_name = "marker_names.txt";   //change here if you want to load a text file under another name (this file should list all marker names followed by a comma)
+String text_file_name = "data/marker_names.txt";   //change here if you want to load a text file under another name (this file should list all marker names followed by a comma)
 String delimiters = " ,.?!;:[]";              //Any punctuation is used as a delimiter.
 String[] names;                               //No need to edit this variable
 
