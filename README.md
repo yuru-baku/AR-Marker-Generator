@@ -32,9 +32,6 @@ This allows you to create single markers but also named sets of markers (batch p
 ![Marker example](armarkergenerator/markers/handL000.png)
 
 
-* black and white and high density of triangles (tested in Vuforia and HoloLens with good results)
-![Marker example](armarkergenerator/markers/markerexample.png)
-
 ## Testing
 
 * This has been successfully tested using Processing 3.0b4 (alpha), which is revision 0242. If you tested on a newer version, feel free to let us know what happened using a issue tracker / pull request. 
