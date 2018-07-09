@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title> Augmented Reality Marker Generator</title>
+    <meta charset="utf-8">
+	<meta name="description" content="Generate Augmented Reality Markers directly from the browser! Exports png/jpeg/pdf">
+	<meta name="keywords" content="augmented reality, vuforia, marker, tracking, ar, artoolkit, arjs">
+	<meta name="author" content="Danilo Gasques">
+    <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
+    <style> 
+		html, body {
+		  height: 100%;
+		  margin: 0;
+		  padding: 0;
+		}
+
+        body {
+		  background-color: #333;
+		  display: flex;
+
+		  /* This centers our sketch horizontally. */
+		  justify-content: center;
+
+		  /* This centers our sketch vertically. */
+		  align-items: center;
+		}
+		
+		.footer {
+		  display: block;
+		  position: absolute;
+		  bottom: 2px;
+		  color: white;
+		  font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; 
+		}
+		
+		#status {
+		  display: block;
+		  padding: 4px;
+		  position: absolute;
+		  top: 2px;
+		
+		  font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace; 
+		  color: yellow;
+		  background: black;
+		}
+		
+		.footer > a, a:link, a:visited  {
+		  color: pink;
+		  text-decoration: none;
+		}
+	</style>
+	<!-- p5.js -->
+    <script src="js/p5.min.js"></script>
+    <script src="js/p5.dom.min.js"></script>
+	<!-- computer vision library -->
+	<script src="js/tracking.min.js"></script>
+	<!-- menus -->
+	<script src="js/jsdat.gui.min.js"></script>
+	<!-- sketch -->
+    <script src="markergenerator.js"></script>
+  </head>
+  <body>
+	<div id="markerholder">
+    </div><br/>
+	<div id="status">
+	
+	</div>
+	
+	<div class="footer">
+	<center>by <a href="http://danilogasques.com">Danilo Gasques</a> (<a href="https://github.com/danilogr/AR-Marker-Generator">github</a>)</center>
+	</div>
+	
+  </body>
+</html>
