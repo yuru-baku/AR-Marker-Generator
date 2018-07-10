@@ -1,4 +1,4 @@
-# [AR-Marker-Generator]([https://danilogr.github.io/AR-Marker-Generator/])
+# [AR-Marker-Generator](https://danilogr.github.io/AR-Marker-Generator/)
 
 A P5.js sketch that generates markers for Augmented Reality applications like [Vuforia](https://www.vuforia.com/), [ARToolkit](https://github.com/artoolkit), and [AR.js](https://github.com/jeromeetienne/AR.js).
 
@@ -8,10 +8,8 @@ This tool
  * Produces a PDF with custom marker dimensions (defaults to 8x8 cm) to make printing fast and easy
  * Generates .patt file for ARToolKit and AR.js
  
-
-![Screenshot](screenshot.JPG)
-
 ## [Click here to try](https://danilogr.github.io/AR-Marker-Generator/)
+![Screenshot](screenshot.JPG)
 
 ## Future work
 
