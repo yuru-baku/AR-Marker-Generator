@@ -4,7 +4,7 @@ A P5.js sketch that generates markers for Augmented Reality applications like [V
 
 This tool
  * Runs from the browser (Tested on Chrome 67+). [Try it](https://danilogr.github.io/AR-Marker-Generator/)
- * Almost guarantees 5-start trackers on Vuforia. It uses [tracking.js](https://trackingjs.com/) to generate highly trackable markers
+ * Guarantees 5-start trackers on Vuforia. It uses [tracking.js](https://trackingjs.com/) to generate highly trackable markers
  * Produces a PDF with custom marker dimensions (defaults to 8x8 cm) to make printing fast and easy
  * Generates .patt file for ARToolKit and AR.js
  
