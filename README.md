@@ -9,9 +9,7 @@ This tool
  * Generates .patt file for ARToolKit and AR.js
  
 
-# Screenshot
-
-![Marker example](armarkergenerator/markers/handR001.png)
+![Screenshot](screenshot.JPG)
 
 # Try it here
 
