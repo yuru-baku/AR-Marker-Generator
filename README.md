@@ -15,5 +15,14 @@ This tool
 
 ## [https://danilogr.github.io/AR-Marker-Generator/](https://danilogr.github.io/AR-Marker-Generator/)
 
+# What could be better?
+
+I wish that there was a way of telling how the marker's quality degrade over time. I also wish that there was a way of generating a set of markers that are not similar to each other.
+
+If I ever have time, I would 
+
+  [ ] Use [three.js](https://threejs.org/) to render a marker at different distances and angles
+  [ ] Use [AR.js](https://github.com/jeromeetienne/AR.js) to assess detection confidence at these different distances and angles
+  [ ] Use [tracking.js](https://trackingjs.com/) to see how the number of detected features change over angles and distance
 
 
