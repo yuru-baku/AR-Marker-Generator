@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title> Augmented Reality Marker Generator</title>
+    <title>Augmented Reality Marker Generator - Vuforia / AR.js / ARToolkit</title>
     <meta charset="utf-8">
-	<meta name="description" content="Generate Augmented Reality Markers directly from the browser! Exports png/jpeg/pdf">
+	<meta name="description" content="Make Augmented Reality Markers directly from the browser! Exports jpeg/pdf/patt in a zip file!">
 	<meta name="keywords" content="augmented reality, vuforia, marker, tracking, ar, artoolkit, arjs">
 	<meta name="author" content="Danilo Gasques">
     <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
@@ -56,6 +56,16 @@
 	<script src="js/tracking.min.js"></script>
 	<!-- menus -->
 	<script src="js/jsdat.gui.min.js"></script>
+	<!-- generating pdfs -->
+	<script src="js/jspdf.min.js"></script>
+	<!-- generating zipfiles -->
+	<script src="js/FileSaver.js"></script>
+	<script src="js/jszip.min.js"></script>
+	
+	<!-- threejs for rendering marker at different viewpoints (TODO) -->
+	<!-- arjs for testing the marker at different viewpoints (TODO) -->
+	<script src="js/threex-arpatternfile.js"></script>
+	
 	<!-- sketch -->
     <script src="markergenerator.js"></script>
   </head>

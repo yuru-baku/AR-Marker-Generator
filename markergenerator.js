@@ -1,7 +1,8 @@
 // ====== Program output configuration  ===========
 // Marker size in pixels
 window.markerSize  = 512; 
-window.markerSizeCm  = 8;  // cm
+window.markerSizeMM  = 80;  // mm
+window.markerName  = "marker";  
 
 // ====== Triangle configuration  ================= 
 // Triangle max size in pixel
@@ -42,8 +43,33 @@ var gui;
 var latestMarkerImageData, latestMarkerImage;
 var generating = false;
 
+// ==== PDF related things === //
+
+
+window.savePDF = true;
+window.paperSizeName = "letter";
+window.paperSizeWidthMM = 215.9;
+window.paperSizeHeightMM = 279.4;
+window.paperSizesOptions = ['letter', 'a4', 'government-letter', 'legal', 'ledger', 'credit-card', 'a3', 'a5', 'dl', 'custom'];
+window.paperSizesMM =
+{
+      'a3': [297, 420],
+      'a4': [210, 297],
+      'a5': [148, 210],
+      'dl': [110, 220],
+      'letter': [215.9, 279.4],
+      'government-letter': [203, 267],
+      'legal': [216, 356],
+      'ledger': [279, 432],
+      'credit-card': [53.975, 85.725]
+};
+
 // ==== p5.js dom related ==== //
 var statusText;
+
+// ================================================================================================================== //
+// ======================== P5js methods for drawing the marker and creating the menus  ============================= //
+// ================================================================================================================== //
 
 // Creates a new random marker
 function createMarker()
@@ -91,23 +117,13 @@ function createMarker()
   // save image in memory
   latestMarkerImageData = p5canvas.drawingContext.getImageData(0, 0, width, height);
   if (!generating)
-    latestMarkerImage = p5canvas.canvas.toDataURL("image/jpg");
+    latestMarkerImage = p5canvas.canvas.toDataURL("image/jpeg");
 	    
   findFeatures();
  
   updateStatus();
  
   
-}
-
-function updateStatus()
-{
-	statusText.html( (generating ? "Generating... / " : "") + markerSize + "x" + markerSize + " / " + featureCount + " features");
-}
-
-function generate()
-{
-	generating = true;
 }
 
 function setup() {
@@ -133,12 +149,53 @@ function setup() {
   guiProcedural.add(window, 'colorLowerLimit', 0, 255).onChange(createMarker);
   guiProcedural.addColor(window, 'backgroundColor').onChange(createMarker);
   
-  
+  // computer vision side of things
   var guiTracking = gui.addFolder('Feature Tracking');
   guiTracking.add(window, 'minFeatures', 200, 1000);
+
+  // pdf
+  var guiPDF = gui.addFolder('PDF');
+  guiPDF.add(window, 'savePDF');
+  guiPDF.add(window, 'markerSizeMM');
+  var paperSizeNameGui = guiPDF.add(window, 'paperSizeName', paperSizesOptions);
+  var paperSizeWidthMMGui = guiPDF.add(window, 'paperSizeWidthMM');
+  var paperSizeHeightMMGui = guiPDF.add(window, 'paperSizeHeightMM');
+  
+  // whenever the paper size name changes, it also changes the dimensions
+  paperSizeNameGui.onChange(function()
+  {
+		if (paperSizeName != 'custom')
+		{
+			paperSizeWidthMM = paperSizesMM[paperSizeName][0];
+			paperSizeHeightMM = paperSizesMM[paperSizeName][1];
+			
+			paperSizeWidthMMGui.updateDisplay();
+			paperSizeHeightMMGui.updateDisplay();
+		}
+  });
+  
+  var changeToCustom = function() {
+	  paperSizeName = 'custom';
+	  paperSizeNameGui.updateDisplay();
+  }
+  
+  paperSizeHeightMMGui.onChange(changeToCustom);
+  paperSizeHeightMMGui.onChange(changeToCustom);
+  
+  
   
   //gui.add(window, 'markerSizeCm', 5, 25).step(1).onChange();
+  var markerNameGui = gui.add(window, 'markerName').onChange()
+  {
+	  
+	// remove illegal characters
+    markerName = markerName.replace(/\<|\>|\:|\"|\/|\\|\||\?|\*|/gi, function (x) {return '';});
+	
+	markerNameGui.updateDisplay();
+	  
+  };
   gui.add(window, 'generate');
+  gui.add(window, 'download');
   
 
   // dom gui
@@ -156,12 +213,96 @@ function draw() {
 	  if (featureCount > minFeatures)
 	  {
 		  generating = false;
-		  latestMarkerImage = p5canvas.canvas.toDataURL("image/jpg");
+		  latestMarkerImage = p5canvas.canvas.toDataURL("image/jpeg");
 		  updateStatus();
 	  }
   }
   
 }
+
+// ================================================================================================================== //
+// ==================== Helper methods for updating status, generating pdf, downloading zip ========================= //
+// ================================================================================================================== //
+
+// updates status text at the top of the screen
+function updateStatus()
+{
+	statusText.html( (generating ? "Generating... / " : "") + markerSize + "x" + markerSize + " / " + featureCount + " features");
+}
+
+// starts generate animation
+function generate()
+{
+	generating = true;
+}
+
+// creates and zips a pdf, patt file, readme.txt
+function download()
+{
+	// create zip file
+	var zip = new JSZip();
+	
+	// image file (hopefully, jpeg)
+	var fileRe = /data:image\/(\w+);(\w+),(.*)/; 
+	var pic = fileRe.exec(latestMarkerImage);
+	var picname = markerName+"."+pic[1];
+	zip.file(picname, pic[3], {base64: true});
+	
+	// generate patt file(s)
+	var pattname = markerName+".patt";
+	zip.file(markerName+".patt", generatePatt());
+	
+	// generate pdf
+	var pdfname = markerName+".pdf";
+	zip.file(markerName+".pdf", generatePDF(latestMarkerImage, pic[1].toUpperCase()), {blob: true});	
+	
+	// readme.txt 
+	zip.file('ReadMe.txt', 'Marker from https://danilogr.github.io/AR-Marker-Generator/ on ' + (new Date()).toString()+ '\n\n' 
+	 + picname + ' - Picture file that can be used on tools like Vuforia ' + '\n' 
+	 + pattname + ' - .patt file designed for ARToolkit / AR.js ' + '\n' 
+	 + pdfname + ' - Pdf with the proper printing dimensions' + '\n' 
+	);
+	
+	// download zip
+	zip.generateAsync({type:"blob"}).then(function(content) {
+		saveAs(content, markerName+".zip");
+    });
+}
+
+// generates .patt (arjs / artoolkit)
+function generatePatt()
+{
+	// gets image without the borders
+	var innerMarkerCanvas = document.createElement('canvas');
+	innerMarkerCanvas.width = realMarkerSize;
+	innerMarkerCanvas.height = realMarkerSize;
+	var imgData = p5canvas.drawingContext.getImageData(borderSize, borderSize, realMarkerSize, realMarkerSize);
+	innerMarkerCanvas.getContext('2d').putImageData(imgData, 0, 0);
+	
+	
+	// right now I am using what is available in AR.js source code
+	return THREEx.ArPatternFile.encodeImage(innerMarkerCanvas);
+}
+
+// generates pdf
+function generatePDF(pic, picFormat)
+{
+	// paper size
+	var pdfSize = (paperSizeName == 'custom') ? [paperSizeWidthMM, paperSizeHeightMM] : paperSizeName;
+	
+	var doc = new jsPDF({
+	  orientation: 'portrait',
+	  unit: 'mm',
+	  format: pdfSize
+	});
+	
+	// add picture to it
+	doc.addImage(pic, picFormat, Math.round((paperSizeWidthMM - markerSizeMM) / 2) , Math.round((paperSizeHeightMM - markerSizeMM) / 2) , markerSizeMM, markerSizeMM);
+	
+	return doc.output('blob');
+	
+}
+
 
 // uses tracking.js to find tracking features
 function findFeatures()
@@ -175,3 +316,5 @@ function findFeatures()
       //    context.fillRect(corners[i], corners[i + 1], 3, 3);
       //  }
 }
+
+
