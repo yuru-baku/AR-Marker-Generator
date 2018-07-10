@@ -1,3 +1,6 @@
+// author danilo gasques ( danilod100 at gmail.com )
+// based on ASPePeX's https://github.com/ASPePeX/AR-Marker-Generator
+
 // ====== Program output configuration  ===========
 // Marker size in pixels
 window.markerSize  = 512; 
@@ -134,6 +137,7 @@ function setup() {
   // creates the menu
   gui = new dat.GUI();
   
+  
   // creates a folder for the marker
   var guiMarker = gui.addFolder('Marker');
   guiMarker.add(window, 'markerSize', 256, 1024).step(1).onChange(function() {  p5canvas.size(markerSize, markerSize); createMarker(); });
@@ -182,22 +186,25 @@ function setup() {
   paperSizeHeightMMGui.onChange(changeToCustom);
   paperSizeHeightMMGui.onChange(changeToCustom);
   
-  
-  
+
+
+  // download
+  window.guiDownload = gui.addFolder('Download');
   //gui.add(window, 'markerSizeCm', 5, 25).step(1).onChange();
-  var markerNameGui = gui.add(window, 'markerName').onChange()
-  {
-	  
+  var markerNameGui = guiDownload.add(window, 'markerName').onChange(function()
+  { 
 	// remove illegal characters
     markerName = markerName.replace(/\<|\>|\:|\"|\/|\\|\||\?|\*|/gi, function (x) {return '';});
-	
 	markerNameGui.updateDisplay();
-	  
-  };
-  gui.add(window, 'generate');
-  gui.add(window, 'download');
+  });
   
+  guiDownload.add(window, 'download');
+  
+  
+  // generate
+  gui.add(window, 'generate');
 
+  
   // dom gui
   statusText = select('#status');  
   
@@ -213,6 +220,7 @@ function draw() {
 	  if (featureCount > minFeatures)
 	  {
 		  generating = false;
+		  guiDownload.open();
 		  latestMarkerImage = p5canvas.canvas.toDataURL("image/jpeg");
 		  updateStatus();
 	  }
@@ -233,6 +241,7 @@ function updateStatus()
 // starts generate animation
 function generate()
 {
+	guiDownload.close();
 	generating = true;
 }
 
