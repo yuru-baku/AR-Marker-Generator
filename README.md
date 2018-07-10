@@ -1,4 +1,4 @@
-# AR-Marker-Generator
+# [AR-Marker-Generator]([https://danilogr.github.io/AR-Marker-Generator/])
 
 A P5.js sketch that generates markers for Augmented Reality applications like [Vuforia](https://www.vuforia.com/), [ARToolkit](https://github.com/artoolkit), and [AR.js](https://github.com/jeromeetienne/AR.js).
 
@@ -11,11 +11,9 @@ This tool
 
 ![Screenshot](screenshot.JPG)
 
-# Try it here
+## [Click here to try](https://danilogr.github.io/AR-Marker-Generator/)
 
-## [https://danilogr.github.io/AR-Marker-Generator/](https://danilogr.github.io/AR-Marker-Generator/)
-
-# What could be better?
+## Future work
 
 I wish that there was a way of telling how the marker's quality degrade over time. I also wish that there was a way of generating a set of markers that are not similar to each other.
 
