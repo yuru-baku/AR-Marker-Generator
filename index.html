@@ -4,9 +4,9 @@
     <title>Online Augmented Reality Marker Generator</title>
     <meta charset="utf-8">
         <meta name="description" content="Make Augmented Reality Markers directly from the browser! Exports jpeg/pdf/patt in a zip file so you can quickly use them on Vuforia, AR.js, and ARToolki!">
-        <meta name="keywords" content="augmented reality, vuforia, marker, tracking, ar, artoolkit, arjs">
+        <meta name="keywords" content="augmented reality, vuforia, marker, tracking, ar, artoolkit, arjs, computer vision">
         <meta name="author" content="Danilo Gasques">
-        <meta property="og:title" content="Augmented Reality Marker Generator: Make markers that work seamlessly on Vuforia, ARToolkit, and AR.js"/>
+        <meta property="og:title" content="Augmented Reality Marker Generator: Create fiducials/markers that work seamlessly on Vuforia, ARToolkit, and AR.js"/>
         <meta property="og:description" content="Make Augmented Reality Markers directly from the browser! Exports jpeg/pdf/patt in a zip file!" />
         <meta property="og:image" content="https://danilogr.github.io/AR-Marker-Generator/screenshot.JPG" />
         <meta name="viewport" width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0>
@@ -77,7 +77,7 @@
 	<script src="js/threex-arpatternfile.js"></script>
 	
 	<!-- sketch -->
-    <script src="markergenerator.js"></script>
+  <script src="markergenerator.js"></script>
   </head>
   <body>
 	<div id="markerholder">
@@ -85,6 +85,9 @@
 	<div id="status">
 	
 	</div>
+	
+	<input id="userBackgroundImage" accept=".gif, .png, .jpg, .jpeg" type="file" style="visibility:hidden"/>
+	<input id="userForegroundImage" accept=".gif, .png, .jpg, .jpeg" type="file" style="visibility:hidden"/>
 	
 	<div class="footer">
 	<center><a href="http://danilogasques.com">Danilo Gasques</a> (<a href="https://github.com/danilogr/AR-Marker-Generator">github</a>)</center>

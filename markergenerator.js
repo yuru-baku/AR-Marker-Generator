@@ -31,6 +31,14 @@ var borderColor = 0;
 // Background clear color
 window.backgroundColor = [255, 255, 255];
 
+// user image related settings
+window.guiImageControllers = {};
+window.backgroundImage = undefined;
+window.backgroundImageSet = false;
+
+window.foregroundImage = undefined;
+window.foregroundImageSet = false;
+
 
 // ===== Variables and code below should be modified at your own risk ====
 var markerCounter = 0;
@@ -85,8 +93,13 @@ function createMarker()
 	
   // cleans the screen
   background(backgroundColor[0],backgroundColor[1],backgroundColor[2]);
+	
+	// draws background image
+	if (backgroundImageSet)
+  {
+		image(backgroundImage,0,0,window.markerSize,window.markerSize);
+	}
   
-
   // draw triangles
   strokeWeight(triangleStrokeWidth);
   for (var i = 0; i < triangleLimit; i++)
@@ -115,18 +128,91 @@ function createMarker()
   rect(0, markerSize - borderSize, markerSize, borderSize + 1);  // down
   rect(0, 0, borderSize, markerSize); // left
   rect(markerSize - borderSize, 0, borderSize + 1, markerSize); // right
+	
+	// draws foreground
+	if (foregroundImageSet)
+  {
+		image(foregroundImage,0,0,window.markerSize,window.markerSize);
+	}
   
   
   // save image in memory
   latestMarkerImageData = p5canvas.drawingContext.getImageData(0, 0, width, height);
   if (!generating)
-    latestMarkerImage = p5canvas.canvas.toDataURL("image/jpeg");
+    latestMarkerImage = p5canvas.canvas.toDataURL("image/jpeg", 1.0);
 	    
   findFeatures();
  
   updateStatus();
  
   
+}
+
+
+function onErrorBackgroundImage()
+{
+	backgroundImageSet = false;
+	alert('Could not load background image!');
+	
+}
+
+
+function onErrorForegroundImage()
+{
+	foregroundImageSet = false;
+	alert('Could not load foreground image!');
+	
+}
+
+function onLoadBackgroundImage(backgroundImage)
+{
+	console.log(backgroundImage);
+	backgroundImageSet = true;
+	createMarker();
+	guiImageControllers['background'].name("Remove bground");
+}
+
+function onLoadForegroundImage(foregroundImage)
+{
+	console.log(foregroundImage);
+	foregroundImageSet = true;
+	createMarker();
+	guiImageControllers['foreground'].name("Remove fground");
+
+}
+
+function onForegroundImageChange() 
+{	
+
+	if (userForegroundFilePicker.files.length > 0)
+	{
+		window.foregroundImage = loadImage(URL.createObjectURL(userForegroundFilePicker.files[0]), onLoadForegroundImage, onErrorForegroundImage);
+
+	}
+}
+
+
+function onBackgroundImageChange() 
+{	
+	if (userBackgroundFilePicker.files.length > 0)
+	{
+		window.backgroundImage = loadImage(URL.createObjectURL(userBackgroundFilePicker.files[0]), onLoadBackgroundImage, onErrorBackgroundImage);
+	}
+}
+
+
+function clearBackgroundImage()
+{
+	backgroundImageSet = false;
+	createMarker();
+	guiImageControllers['background'].name("Add background");
+}
+
+function clearForegroundImage()
+{
+	foregroundImageSet = false;
+	createMarker();
+	guiImageControllers['foreground'].name("Add foreground");
 }
 
 function setup() {
@@ -137,11 +223,21 @@ function setup() {
   // creates the menu
   gui = new dat.GUI();
   
-  
+  // images
+  var guiImages = gui.addFolder('Images');
+	window.userBackgroundFilePicker = document.getElementById('userBackgroundImage');
+	window.userForegroundFilePicker = document.getElementById('userForegroundImage');
+	window.userBackgroundFilePicker.onchange = onBackgroundImageChange;
+	window.userForegroundFilePicker.onchange = onForegroundImageChange;
+	
+	guiImageControllers['background'] = guiImages.add({backgroundImage : function() { if (!backgroundImageSet) {userBackgroundFilePicker.click();} else {clearBackgroundImage()}}, gui: window.guiImageControllers}, 'backgroundImage').name("Add background");
+	guiImageControllers['foreground'] = guiImages.add({foregroundImage : function() { if (!foregroundImageSet) {userForegroundFilePicker.click();} else {clearForegroundImage()}}, gui: window.guiImageControllers}, 'foregroundImage').name("Add foreground");
+	guiImages.open();
+	
   // creates a folder for the marker
   var guiMarker = gui.addFolder('Marker');
   guiMarker.add(window, 'markerSize', 256, 1024).step(1).onChange(function() {  p5canvas.size(markerSize, markerSize); createMarker(); });
-  guiMarker.add(window, 'borderSizePercent').min(0).step(0.05).max(0.5).onChange(createMarker);
+  guiMarker.add(window, 'borderSizePercent').min(0).step(0.025).max(0.5).onChange(createMarker);
   guiMarker.open();
   
   // floating gui
