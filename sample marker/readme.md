@@ -15,6 +15,31 @@ If you have a motion capture system that uses infrared tracking, you can attach 
  - [marker_aruco_optitrack_vuforia.pdf](marker_aruco_optitrack_vuforia.pdf) - Pdf with the proper printing dimensions (letter page with a 20cm by 20 cm marker)
  - [VuforiaOptiTrackArUcoMarker.unitypackage](VuforiaOptiTrackArUcoMarker.unitypackage) - Unity package for tracking this marker with Vuforia
 
+
+# Academic Citations
+If you used this marker in your research, help us make it easier to reproduce by citing this work
+
+> Danilo Gasques, Alexander Scheurer, & Pedro Lopes. (2021, January 26). danilogr/AR-Marker-Generator v1.0 (Version v1.0). Zenodo. http://doi.org/10.5281/zenodo.4466705
+
+or using bibtex:
+
+```
+@software{danilo_gasques_2021_4466705,
+  author       = {Danilo Gasques and
+                  Alexander Scheurer and
+                  Pedro Lopes},
+  title        = {danilogr/AR-Marker-Generator v1.0},
+  month        = jan,
+  year         = 2021,
+  publisher    = {Zenodo},
+  version      = {v1.0},
+  doi          = {10.5281/zenodo.4466705},
+  url          = {https://doi.org/10.5281/zenodo.4466705}
+}
+```
+
+# Testing tracking systems
+
 ## Tracking with Vuforia
 
 ![Vuforia tracking features](vuforiascreenshot.JPG)
