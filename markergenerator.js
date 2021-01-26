@@ -402,7 +402,7 @@ function generatePDF(pic, picFormat)
 	});
 	
 	// add picture to it
-	doc.addImage(pic, picFormat, Math.round((paperSizeWidthMM - markerSizeMM) / 2) , Math.round((paperSizeHeightMM - markerSizeMM) / 2) , markerSizeMM, markerSizeMM);
+	doc.addImage(pic, picFormat, Math.round((paperSizeWidthMM - markerSizeMM) / 2) , Math.round((paperSizeHeightMM - markerSizeMM) / 2) , markerSizeMM, markerSizeMM, 'marker', 'NONE');
 	
 	return doc.output('blob');
 	
