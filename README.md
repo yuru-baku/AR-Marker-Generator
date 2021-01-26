@@ -1,6 +1,9 @@
-# [AR-Marker-Generator](https://danilogr.github.io/AR-Marker-Generator/)
+# [AR Marker Generator](https://danilogr.github.io/AR-Marker-Generator/)
+> In a hurry? Download our [sample marker (20cm)](https://danilogr.github.io/AR-Marker-Generator/sample%20marker/) as [PDF](https://danilogr.github.io/AR-Marker-Generator/sample%20marker/marker_aruco_optitrack_vuforia.pdf), [Unity Package](https://danilogr.github.io/AR-Marker-Generator/sample%20marker/VuforiaOptiTrackArUcoMarker.unitypackage), [jpeg](https://danilogr.github.io/AR-Marker-Generator/sample%20marker/marker_aruco_optitrack_vuforia.jpeg), or [.patt](https://danilogr.github.io/AR-Marker-Generator/sample%20marker/marker_aruco_optitrack_vuforia.patt)!
 
-A P5.js sketch that generates markers for Augmented Reality applications like [Vuforia](https://www.vuforia.com/), [ARToolkit](https://github.com/artoolkit), and [AR.js](https://github.com/jeromeetienne/AR.js).
+Augmented Reality Marker generator for libraries such as [Vuforia](https://www.vuforia.com/), [ARToolkit](https://github.com/artoolkit), and [AR.js](https://github.com/jeromeetienne/AR.js).
+
+
 
 This tool
  * Runs on the browser (Tested on Chrome 67+). [Try it](https://danilogr.github.io/AR-Marker-Generator/)
@@ -24,3 +27,7 @@ If I ever have time, I would
 - [ ] Use [tracking.js](https://trackingjs.com/) to see how the number of detected features change over angles and distance
 
 
+
+# License
+<a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png" /></a><br />This work is licensed under a <a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/4.0/">Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License</a>.
+<small>If you are insterested in making a commercial use of this code, please, reach out to the authors</small>
