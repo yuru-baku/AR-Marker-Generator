@@ -140,8 +140,7 @@ function createMarker() {
   updateStatus();
 }
 
-function drawRect(rectSize) {
-}
+function drawRect(rectSize) {}
 
 function fillRandom(minBrightness, maxBrightness) {
   colorMode(HSB);
@@ -149,11 +148,8 @@ function fillRandom(minBrightness, maxBrightness) {
   colorMode(RGB);
 }
 
-function createRandomVector(sizeMin,sizeMax){
-  return createVector(
-    random(sizeMin,sizeMax),
-    random(sizeMin,sizeMax)
-  );
+function createRandomVector(sizeMin, sizeMax) {
+  return createVector(random(sizeMin, sizeMax), random(sizeMin, sizeMax));
 }
 
 function drawTriangle(triangleSize) {
@@ -162,7 +158,7 @@ function drawTriangle(triangleSize) {
     borderSize + random(realMarkerSize),
     borderSize + random(realMarkerSize)
   );
-  
+
   const sizeMin = -triangleSize / 2;
   const sizeMax = triangleSize / 2;
 
@@ -175,7 +171,7 @@ function drawTriangle(triangleSize) {
   fillRandom(colorLowerLimit, colorUpperLimit);
 
   // Drawing the triangle
-   triangle(a.x, a.y, b.x, b.y, c.x, c.y);
+  triangle(a.x, a.y, b.x, b.y, c.x, c.y);
 }
 
 function onErrorBackgroundImage() {
