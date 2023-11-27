@@ -98,7 +98,7 @@ function createMarker() {
   // finds out real space for markers
   realMarkerSize = markerSize - 2 * borderSize;
 
-  // cleans the screen
+  // clears the screen
   background(backgroundColor[0], backgroundColor[1], backgroundColor[2]);
 
   // draws background image
@@ -109,35 +109,7 @@ function createMarker() {
   // draw triangles
   strokeWeight(triangleStrokeWidth);
   for (var i = 0; i < triangleLimit; i++) {
-    // Randoming triangle corners, in their own relative coordinate system
-    var a = createVector(
-      random(-triangleSize / 2, triangleSize / 2),
-      random(-triangleSize / 2, triangleSize / 2)
-    );
-    var b = createVector(
-      random(-triangleSize / 2, triangleSize / 2),
-      random(-triangleSize / 2, triangleSize / 2)
-    );
-    var c = createVector(
-      random(-triangleSize / 2, triangleSize / 2),
-      random(-triangleSize / 2, triangleSize / 2)
-    );
-
-    // Randoming the center position on the canvas
-    var p = new createVector(
-      borderSize + random(realMarkerSize),
-      borderSize + random(realMarkerSize)
-    );
-
-    // Randoming fill color
-    fill(
-      random(colorLowerLimit, colorUpperLimit),
-      random(colorLowerLimit, colorUpperLimit),
-      random(colorLowerLimit, colorUpperLimit)
-    );
-
-    // Drawing the triangle
-    triangle(a.x + p.x, a.y + p.y, b.x + p.x, b.y + p.y, c.x + p.x, c.y + p.y);
+    drawTriangle(triangleSize);
   }
 
   // draw borders
@@ -166,6 +138,44 @@ function createMarker() {
   findFeatures();
 
   updateStatus();
+}
+
+function drawRect(rectSize) {
+}
+
+function fillRandom(minBrightness, maxBrightness) {
+  colorMode(HSB);
+  fill(random(0, 255), random(0, 255), random(minBrightness, maxBrightness));
+  colorMode(RGB);
+}
+
+function createRandomVector(sizeMin,sizeMax){
+  return createVector(
+    random(sizeMin,sizeMax),
+    random(sizeMin,sizeMax)
+  );
+}
+
+function drawTriangle(triangleSize) {
+  // Randoming the center position on the canvas
+  const p = new createVector(
+    borderSize + random(realMarkerSize),
+    borderSize + random(realMarkerSize)
+  );
+  
+  const sizeMin = -triangleSize / 2;
+  const sizeMax = triangleSize / 2;
+
+  // Random triangle corners, in their own relative coordinate system
+  const a = createRandomVector(sizeMin, sizeMax).add(p);
+  const b = createRandomVector(sizeMin, sizeMax).add(p);
+  const c = createRandomVector(sizeMin, sizeMax).add(p);
+
+  // Fill with random color within choosen brightness Levels
+  fillRandom(colorLowerLimit, colorUpperLimit);
+
+  // Drawing the triangle
+   triangle(a.x, a.y, b.x, b.y, c.x, c.y);
 }
 
 function onErrorBackgroundImage() {
@@ -393,7 +403,7 @@ function updateStatus() {
 
 // starts generate animation
 function generate() {
-  guiDownload.close();
+  //guiDownload.close();
   generating = true;
 }
 
