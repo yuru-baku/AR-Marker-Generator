@@ -12,17 +12,21 @@ window.markerName = "marker";
 window.triangleSize = 128;
 
 // Draw number of triangles per marker
-window.triangleLimit = 10;
+window.triangleLimit = 100;
 
 // Lines' width
 window.triangleStrokeWidth = 10;
 
 // Color limits to control overall color brightness
-window.colorUpperLimit = 255;
-window.colorLowerLimit = 128;
+window.brighnessUpper = 100;
+window.brighnessLower = 60;
+window.saturationLower = 0;
+window.saturationUpper = 100;
+window.hueLower = 0;
+window.hueUpper = 360;
 
 // Border size in percentage (it takes marker space
-window.borderSizePercent = 0.25; // e.g., 0.25 for 25%
+window.borderSizePercent = 0.08; // e.g., 0.25 for 25%
 
 // Border color (initially set to black)
 var borderColor = 0;
@@ -45,7 +49,7 @@ var realMarkerSize, borderSize;
 // ==== computer vision related ==== //
 var featureCount = 0,
   corners = [];
-window.minFeatures = 400;
+window.minFeatures = 50;
 
 // ==== Canvas related things === //
 var p5canvas;
@@ -109,16 +113,10 @@ function createMarker() {
   // draw triangles
   strokeWeight(triangleStrokeWidth);
   for (var i = 0; i < triangleLimit; i++) {
-    drawTriangle(triangleSize);
+    drawRect(triangleSize);
   }
 
-  // draw borders
-  strokeWeight(0);
-  fill(borderColor);
-  rect(0, 0, markerSize, borderSize); // up
-  rect(0, markerSize - borderSize, markerSize, borderSize + 1); // down
-  rect(0, 0, borderSize, markerSize); // left
-  rect(markerSize - borderSize, 0, borderSize + 1, markerSize); // right
+  drawBorder(borderColor, markerSize);
 
   // draws foreground
   if (foregroundImageSet) {
@@ -132,6 +130,7 @@ function createMarker() {
     width,
     height
   );
+
   if (!generating)
     latestMarkerImage = p5canvas.canvas.toDataURL("image/jpeg", 1.0);
 
@@ -140,11 +139,32 @@ function createMarker() {
   updateStatus();
 }
 
-function drawRect(rectSize) {}
+function drawBorder(borderColor, markerSize) {
+  strokeWeight(0);
+  fill(borderColor);
+  rect(0, 0, markerSize, borderSize); // up
+  rect(0, markerSize - borderSize, markerSize, borderSize + 1); // down
+  rect(0, 0, borderSize, markerSize); // left
+  rect(markerSize - borderSize, 0, borderSize + 1, markerSize); // right
+}
 
-function fillRandom(minBrightness, maxBrightness) {
-  colorMode(HSB);
-  fill(random(0, 255), random(0, 255), random(minBrightness, maxBrightness));
+function drawRect(rectSize) {
+  const sizeMin = rectSize / 4;
+  const sizeMax = rectSize;
+
+  const rectDim = createRandomVector(sizeMin, sizeMax);
+  const anchor = generateAnchor();
+  fillRandom();
+  rect(anchor.x, anchor.y, rectDim.x, rectDim.y, 20);
+}
+
+function fillRandom() {
+  colorMode(HSB, 360, 100, 100);
+  fill(
+    random(hueLower, hueUpper),
+    random(saturationLower, saturationUpper),
+    random(brighnessLower, brighnessUpper)
+  );
   colorMode(RGB);
 }
 
@@ -152,23 +172,27 @@ function createRandomVector(sizeMin, sizeMax) {
   return createVector(random(sizeMin, sizeMax), random(sizeMin, sizeMax));
 }
 
-function drawTriangle(triangleSize) {
-  // Randoming the center position on the canvas
-  const p = new createVector(
-    borderSize + random(realMarkerSize),
-    borderSize + random(realMarkerSize)
+function generateAnchor() {
+  return new createVector(
+    borderSize / 2 + random(realMarkerSize),
+    borderSize / 2 + random(realMarkerSize)
   );
+}
+
+function drawTriangle(triangleSize) {
+  // Random center position on the canvas
+  const anchor = generateAnchor();
 
   const sizeMin = -triangleSize / 2;
   const sizeMax = triangleSize / 2;
 
-  // Random triangle corners, in their own relative coordinate system
-  const a = createRandomVector(sizeMin, sizeMax).add(p);
-  const b = createRandomVector(sizeMin, sizeMax).add(p);
-  const c = createRandomVector(sizeMin, sizeMax).add(p);
+  // Random triangle corners
+  const a = createRandomVector(sizeMin, sizeMax).add(anchor);
+  const b = createRandomVector(sizeMin, sizeMax).add(anchor);
+  const c = createRandomVector(sizeMin, sizeMax).add(anchor);
 
   // Fill with random color within choosen brightness Levels
-  fillRandom(colorLowerLimit, colorUpperLimit);
+  fillRandom();
 
   // Drawing the triangle
   triangle(a.x, a.y, b.x, b.y, c.x, c.y);
@@ -305,8 +329,12 @@ function setup() {
   guiProcedural
     .add(window, "triangleStrokeWidth", 0, 30)
     .onChange(createMarker);
-  guiProcedural.add(window, "colorUpperLimit", 0, 255).onChange(createMarker);
-  guiProcedural.add(window, "colorLowerLimit", 0, 255).onChange(createMarker);
+  guiProcedural.add(window, "brighnessUpper", 0, 100).onChange(createMarker);
+  guiProcedural.add(window, "brighnessLower", 0, 100).onChange(createMarker);
+  guiProcedural.add(window, "saturationLower", 0, 100).onChange(createMarker);
+  guiProcedural.add(window, "saturationUpper", 0, 100).onChange(createMarker);
+  guiProcedural.add(window, "hueLower", 0, 100).onChange(createMarker);
+  guiProcedural.add(window, "hueUpper", 0, 100).onChange(createMarker);
   guiProcedural.addColor(window, "backgroundColor").onChange(createMarker);
 
   // computer vision side of things
